@@ -1,6 +1,7 @@
 import type { AWS } from '@serverless/typescript';
 
 import hello from '@functions/hello';
+import {authRegister} from '@functions/v1/auth';
 
 const serverlessConfiguration: AWS = {
   service: 'webast-server',
@@ -33,6 +34,7 @@ const serverlessConfiguration: AWS = {
       concurrency: 10,
     },
   },
+	functions: { hello, authRegister },
 };
 
 module.exports = serverlessConfiguration;
