@@ -1,7 +1,7 @@
-import type { AWS } from '@serverless/typescript';
+import type {AWS} from '@serverless/typescript';
 
 import hello from '@functions/hello';
-import {authRegister} from '@functions/v1/auth';
+import {authRegister, authLogin } from '@functions/v1/auth';
 
 const serverlessConfiguration: AWS = {
 	service: 'webast-server',
@@ -32,9 +32,9 @@ const serverlessConfiguration: AWS = {
 	},
 
 	//* Functions
-	functions: { hello, authRegister },
+	functions: {hello, authRegister, authLogin},
 
-	package: { individually: true },
+	package: {individually: true},
 	custom: {
 		esbuild: {
 			bundle: true,
@@ -42,7 +42,7 @@ const serverlessConfiguration: AWS = {
 			sourcemap: true,
 			exclude: ['aws-sdk'],
 			target: 'node14',
-			define: { 'require.resolve': undefined },
+			define: {'require.resolve': undefined},
 			platform: 'node',
 			concurrency: 10,
 		},

@@ -5,7 +5,7 @@ import UserModel from './model';
 import * as UsersRepository from './repository';
 
 
-// TODO: Add function docs
+// TODO: Add function docs.
 export const createUser = async (user: UserModel): Promise<UserModel> => {
 	// TODO: Validate email.
 	// TODO: Validate password; strength.
@@ -13,9 +13,8 @@ export const createUser = async (user: UserModel): Promise<UserModel> => {
 	// Check if user exists.
 	const existingUser = await UsersRepository.getUserByEmail(user.email);
 
-	if (existingUser) {
+	if (existingUser)
 		throw new Error('User exists, login instead.');
-	}
 
 	// Create user.
 	const newUser = await UsersRepository.createUser(user);

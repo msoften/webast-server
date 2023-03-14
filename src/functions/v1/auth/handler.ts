@@ -7,10 +7,12 @@ import {middyfy} from '@libs/lambda';
 
 import schema from './schema';
 import UserModel from '../users/model';
-import {createUser} from '../users/service';
+import * as usersService from '../users/service';
+import * as authService from './service';
 import {randomString} from '../utils/common';
 
 
+// TODO: Add function docs.
 const registerFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
 	// Create user object.
 	const date = new Date();
@@ -25,11 +27,11 @@ const registerFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (ev
 
 	try {
 		// Save user to db.
-		await createUser(user);
+		await usersService.createUser(user);
 
 		return formatJSONResponse({
 			statusCode: 201,
-			message: 'User created',
+			message: 'Registered successfully.',
 			data: user.token
 		});
 	} catch (error) {
@@ -43,4 +45,26 @@ const registerFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (ev
 
 const register = middyfy(registerFun);
 
-export {register};
+
+// TODO: Add function docs.
+export const loginFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+	try {
+		const token: string = await authService.getUserToken(event.body.email, event.body.password);
+
+		return formatJSONResponse({
+			statusCode: 201,
+			message: 'Logged in successfully.',
+			data: token
+		});
+	} catch (error) {
+		return formatJSONResponse({
+			statusCode: 500,
+			message: error.message,
+			data: ''
+		});
+	}
+};
+
+const login = middyfy(loginFun);
+
+export {register, login};

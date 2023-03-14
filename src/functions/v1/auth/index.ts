@@ -32,3 +32,32 @@ export const authRegister = {
 		},
 	],
 };
+
+// TODO: Add openAPI docs.
+export const authLogin = {
+	handler: `${handlerPath(__dirname)}/handler.login`,
+	events: [
+		{
+			http: {
+				method: 'post',
+				path: 'v1/auth/login',
+				request: {
+					schemas: {
+						'application/json': schema,
+					},
+				},
+			},
+		},
+	],
+	iamRoleStatements: [
+		{
+			Effect: 'Allow',
+			Action: [
+				'dynamodb:GetItem',
+				'dynamodb:PutItem',
+			],
+			Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:service}-users-${self:provider.stage}',
+		},
+	],
+};
+
