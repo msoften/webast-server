@@ -35,6 +35,30 @@ const serverlessConfiguration: AWS = {
     },
   },
 	functions: { hello, authRegister },
+	resources: {
+		Resources: {
+			//* DynamoDB tables.
+			UsersTable: {
+				Type: 'AWS::DynamoDB::Table',
+				Properties: {
+					TableName: '${self:provider.environment.TABLE_USERS}',
+					AttributeDefinitions: [
+						{
+							AttributeName: 'email',
+							AttributeType: 'S',
+						}
+					],
+					KeySchema: [
+						{
+							AttributeName: 'email',
+							KeyType: 'HASH',
+						}
+					],
+					BillingMode: 'PAY_PER_REQUEST'
+				},
+			},
+		}
+	}
 };
 
 module.exports = serverlessConfiguration;
