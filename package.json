@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@middy/core": "^3.4.0",
-    "@middy/http-json-body-parser": "^3.4.0"
+    "@middy/http-json-body-parser": "^3.4.0",
+    "openai": "^3.2.1"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
@@ -25,6 +26,7 @@
     "eslint-config-xo-typescript": "^0.56.0",
     "json-schema-to-ts": "^1.5.0",
     "serverless": "^3.0.0",
+    "serverless-dotenv-plugin": "^4.0.2",
     "serverless-esbuild": "^1.23.3",
     "serverless-iam-roles-per-function": "^3.2.0",
     "ts-node": "^10.4.0",
