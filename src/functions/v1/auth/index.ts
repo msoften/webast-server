@@ -17,7 +17,8 @@ export const authRegister = {
 					schemas: {
 						'application/json': schema,
 					},
-				}
+				},
+				cors: true,
 			},
 		},
 	],
@@ -46,6 +47,7 @@ export const authLogin = {
 						'application/json': schema,
 					},
 				},
+				cors: true,
 			},
 		},
 	],

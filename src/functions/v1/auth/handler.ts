@@ -5,7 +5,6 @@ import type {ValidatedEventAPIGatewayProxyEvent} from '@libs/api-gateway';
 import {formatJSONResponse} from '@libs/api-gateway';
 
 import {middyfy} from '@libs/lambda';
-import cors from '@middy/http-cors';
 
 import schema from './schema';
 import UserModel from '../users/model';
@@ -31,22 +30,31 @@ const registerFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (ev
 		// Save user to db.
 		await usersService.createUser(user);
 
-		return formatJSONResponse({
+		return {
 			statusCode: 201,
-			message: 'Registered successfully.',
-			data: user.token
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: 'Registered successfully.',
+				data: user.token
+			})
+		};
 	} catch (error) {
-		return formatJSONResponse({
+		return {
 			statusCode: 500,
-			message: error.message,
-			data: ''
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: error.message,
+				data: ''
+			})
+		};
 	}
 };
 
-const register = middyfy(registerFun)
-	.use(cors());
+const register = middyfy(registerFun);
 
 
 // TODO: Add function docs.
@@ -54,21 +62,30 @@ export const loginFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
 	try {
 		const token: string = await authService.getUserToken(event.body.email, event.body.password);
 
-		return formatJSONResponse({
+		return {
 			statusCode: 201,
-			message: 'Logged in successfully.',
-			data: token
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: 'Logged in successfully.',
+				data: token
+			})
+		};
 	} catch (error) {
-		return formatJSONResponse({
+		return {
 			statusCode: 500,
-			message: error.message,
-			data: ''
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: error.message,
+				data: ''
+			})
+		};
 	}
 };
 
-const login = middyfy(loginFun)
-	.use(cors());
+const login = middyfy(loginFun);
 
 export {register, login};
