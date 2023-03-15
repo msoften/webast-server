@@ -11,7 +11,8 @@ const serverlessConfiguration: AWS = {
 	//* Plugins.
 	plugins: [
 		'serverless-esbuild',
-		'serverless-iam-roles-per-function'
+		'serverless-iam-roles-per-function',
+		'serverless-dotenv-plugin',
 	],
 	provider: {
 		name: 'aws',
