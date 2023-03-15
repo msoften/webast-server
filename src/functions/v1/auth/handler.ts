@@ -3,6 +3,7 @@
 
 import type {ValidatedEventAPIGatewayProxyEvent} from '@libs/api-gateway';
 import {formatJSONResponse} from '@libs/api-gateway';
+
 import {middyfy} from '@libs/lambda';
 
 import schema from './schema';
@@ -29,17 +30,27 @@ const registerFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (ev
 		// Save user to db.
 		await usersService.createUser(user);
 
-		return formatJSONResponse({
+		return {
 			statusCode: 201,
-			message: 'Registered successfully.',
-			data: user.token
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: 'Registered successfully.',
+				data: user.token
+			})
+		};
 	} catch (error) {
-		return formatJSONResponse({
+		return {
 			statusCode: 500,
-			message: error.message,
-			data: ''
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: error.message,
+				data: ''
+			})
+		};
 	}
 };
 
@@ -51,17 +62,27 @@ export const loginFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
 	try {
 		const token: string = await authService.getUserToken(event.body.email, event.body.password);
 
-		return formatJSONResponse({
+		return {
 			statusCode: 201,
-			message: 'Logged in successfully.',
-			data: token
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: 'Logged in successfully.',
+				data: token
+			})
+		};
 	} catch (error) {
-		return formatJSONResponse({
+		return {
 			statusCode: 500,
-			message: error.message,
-			data: ''
-		});
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: error.message,
+				data: ''
+			})
+		};
 	}
 };
 
