@@ -2,6 +2,7 @@ import type {AWS} from '@serverless/typescript';
 
 import hello from '@functions/hello';
 import {authRegister, authLogin } from '@functions/v1/auth';
+import {aiChat} from '@functions/v1/ai';
 
 const serverlessConfiguration: AWS = {
 	service: 'webast-server',
@@ -32,7 +33,11 @@ const serverlessConfiguration: AWS = {
 	},
 
 	//* Functions
-	functions: {hello, authRegister, authLogin},
+	functions: {
+		hello, 
+		authRegister, authLogin,
+		aiChat,
+	},
 
 	package: {individually: true},
 	custom: {
