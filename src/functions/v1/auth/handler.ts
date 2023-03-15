@@ -3,7 +3,9 @@
 
 import type {ValidatedEventAPIGatewayProxyEvent} from '@libs/api-gateway';
 import {formatJSONResponse} from '@libs/api-gateway';
+
 import {middyfy} from '@libs/lambda';
+import cors from '@middy/http-cors';
 
 import schema from './schema';
 import UserModel from '../users/model';
@@ -43,7 +45,8 @@ const registerFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (ev
 	}
 };
 
-const register = middyfy(registerFun);
+const register = middyfy(registerFun)
+	.use(cors());
 
 
 // TODO: Add function docs.
@@ -65,6 +68,7 @@ export const loginFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
 	}
 };
 
-const login = middyfy(loginFun);
+const login = middyfy(loginFun)
+	.use(cors());
 
 export {register, login};

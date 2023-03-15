@@ -17,7 +17,7 @@ export const authRegister = {
 					schemas: {
 						'application/json': schema,
 					},
-				},
+				}
 			},
 		},
 	],
