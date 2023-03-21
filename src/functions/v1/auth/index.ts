@@ -63,3 +63,7 @@ export const authLogin = {
 	],
 };
 
+// TODO: Add openAPI docs.
+export const auth = {
+	handler: `${handlerPath(__dirname)}/handler.auth`,
+};

@@ -1,8 +1,9 @@
 import type {AWS} from '@serverless/typescript';
 
 import hello from '@functions/hello';
-import {authRegister, authLogin } from '@functions/v1/auth';
+import {authRegister, authLogin} from '@functions/v1/auth';
 import {aiChat} from '@functions/v1/ai';
+import {subscriptions, createUserSubscription, getUserTokens} from '@functions/v1/subscriptions';
 
 const serverlessConfiguration: AWS = {
 	service: 'webast-server',
@@ -22,11 +23,12 @@ const serverlessConfiguration: AWS = {
 			shouldStartNameWithService: true,
 		},
 
-		//* Environmen variables.
+		//* Environment variables.
 		environment: {
 			AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
 			NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
 			TABLE_USERS: '${self:service}-users-${self:provider.stage}',
+			TABLE_USERS_SUBSCRIPTIONS: '${self:service}-users-subscriptions-01-${self:provider.stage}',
 		},
 		profile: 'completecoding.io-serverless',
 		stage: 'dev',
@@ -34,10 +36,13 @@ const serverlessConfiguration: AWS = {
 	},
 
 	//* Functions
+	// TODO: Auto import all exported functions
+	// TODO: Fix authorization problem
 	functions: {
-		hello, 
+		hello,
 		authRegister, authLogin,
 		aiChat,
+		subscriptions, createUserSubscription, getUserTokens
 	},
 
 	package: {individually: true},
@@ -58,6 +63,7 @@ const serverlessConfiguration: AWS = {
 	resources: {
 		Resources: {
 			//* DynamoDB tables.
+			// TODO: change all table names to reference from environment variable.
 			UsersTable: {
 				Type: 'AWS::DynamoDB::Table',
 				Properties: {
@@ -73,6 +79,25 @@ const serverlessConfiguration: AWS = {
 							AttributeName: 'email',
 							KeyType: 'HASH',
 						}
+					],
+					BillingMode: 'PAY_PER_REQUEST'
+				},
+			},
+			UsersSubscriptionsTable: {
+				Type: 'AWS::DynamoDB::Table',
+				Properties: {
+					TableName: '${self:provider.environment.TABLE_USERS_SUBSCRIPTIONS}',
+					AttributeDefinitions: [
+						{
+							AttributeName: 'paymentReference',
+							AttributeType: 'S',
+						},
+					],
+					KeySchema: [
+						{
+							AttributeName: 'paymentReference',
+							KeyType: 'HASH',
+						},
 					],
 					BillingMode: 'PAY_PER_REQUEST'
 				},
