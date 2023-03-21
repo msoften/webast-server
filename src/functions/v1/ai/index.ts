@@ -27,6 +27,7 @@ export const aiChat = {
 			Effect: 'Allow',
 			Action: [
 				'dynamodb:GetItem',
+				'dynamodb:PutItem',
 			],
 			Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:service}-users-${self:provider.stage}',
 		},

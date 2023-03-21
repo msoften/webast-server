@@ -2,6 +2,7 @@
 // Presentation layer as Lambda functions
 
 import type {ValidatedEventAPIGatewayProxyEvent} from '@libs/api-gateway';
+import {APIGatewayAuthorizerResult, APIGatewayTokenAuthorizerEvent} from 'aws-lambda';
 
 import {middyfy} from '@libs/lambda';
 
@@ -10,6 +11,8 @@ import UserModel from '../users/model';
 import * as usersService from '../users/service';
 import * as authService from './service';
 import {randomString} from '../utils/common';
+
+import * as UsersRepository from '../users/repository';
 
 
 // TODO: Add function docs.
@@ -22,6 +25,7 @@ const registerFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (ev
 		password: event.body.password, // TODO: Encrypt password.
 		token: randomString(32),
 		tokenExpiry: date.setDate(date.getDate() + 1), // Add a day from now, // TODO: Use environemnt variable for expiry duration.
+		aiTokens: 0,
 		date: date.getTime()
 	};
 
@@ -87,4 +91,52 @@ export const loginFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async
 
 const login = middyfy(loginFun);
 
-export {register, login};
+
+// TODO: Add function docs.
+export const authFun = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> => {
+	// TODO: Implement custom authorizer logic here
+	const token = event.authorizationToken;
+	const methodArn = event.methodArn;
+
+	// Get user with this token.
+	try {
+		const user = await UsersRepository.getUserByToken(token);
+
+		if (user) {
+			return {
+				principalId: 'user',
+				policyDocument: {
+					Version: '2012-10-17',
+					Statement: [
+						{
+							Action: 'execute-api:Invoke',
+							Effect: 'Allow',
+							Resource: methodArn,
+						},
+					],
+				},
+			};
+		}
+
+		throw new Error('Authorization failed');
+	} catch (error) {
+		return {
+			principalId: 'user',
+			policyDocument: {
+				Version: '2012-10-17',
+				Statement: [
+					{
+						Action: 'execute-api:Invoke',
+						Effect: 'Deny',
+						Resource: methodArn,
+					},
+				],
+			},
+		};
+	}
+};
+
+
+const auth = middyfy(authFun);
+
+export {register, login, auth};

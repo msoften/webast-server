@@ -12,10 +12,13 @@ import * as aiService from './service';
 const chatFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
 	// TODO: Check if user is authorized.
 	// TODO: Check if user has a subscription and has enough tokens.
+	
 	try {
 		// TODO: Verify message has the correct format.
 		const messages = JSON.parse(event.body.messages);
-		const response = await aiService.getAIChatResponse(messages);
+		const email = JSON.parse(event.body.email);
+
+		const response = await aiService.getAIChatResponse(messages, email);
 
 		return {
 			statusCode: 200,

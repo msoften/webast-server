@@ -4,5 +4,6 @@ export default interface User{
 	password: string;
 	token: string;
 	tokenExpiry: number;
+	aiTokens: number;
 	date: number;
-};
+}
