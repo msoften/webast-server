@@ -35,7 +35,7 @@ export const getAIChatResponse = async (messages: any, email: string): Promise<a
 
 		user.aiTokens = newTokensAmount;
 
-		UsersRepository.createUser(user);
+		await UsersRepository.createUser(user);
 
 		return completion.data.choices[0].message;
 	} catch (error) {
