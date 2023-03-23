@@ -1,9 +1,6 @@
 import schema from './schema';
 import { handlerPath } from '@libs/handler-resolver';
 
-// TODO: Export as named modules.
-// TODO: Create register endpoint.
-
 
 // TODO: Add openAPI docs.
 export const aiChat = {
@@ -29,6 +26,7 @@ export const aiChat = {
 				'dynamodb:GetItem',
 				'dynamodb:PutItem',
 			],
+			// TODO: Convert table to programmatic import.
 			Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:service}-users-${self:provider.stage}',
 		},
 	],

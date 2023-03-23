@@ -16,7 +16,7 @@ const chatFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
 	try {
 		// TODO: Verify message has the correct format.
 		const messages = JSON.parse(event.body.messages);
-		const email = JSON.parse(event.body.email);
+		const email = event.body.email;
 
 		const response = await aiService.getAIChatResponse(messages, email);
 
@@ -45,4 +45,5 @@ const chatFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
 };
 
 const chat = middyfy(chatFun);
+
 export {chat};
