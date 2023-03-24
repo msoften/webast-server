@@ -1,7 +1,7 @@
 import type {AWS} from '@serverless/typescript';
 
 import hello from '@functions/hello';
-import {authRegister, authLogin} from '@functions/v1/auth';
+import {authRegister, authLogin, auth, authTest} from '@functions/v1/auth';
 import {aiChat} from '@functions/v1/ai';
 import {subscriptions, createUserSubscription, getUserTokens} from '@functions/v1/subscriptions';
 
@@ -40,9 +40,9 @@ const serverlessConfiguration: AWS = {
 	// TODO: Fix authorization problem
 	functions: {
 		hello,
-		authRegister, authLogin,
-		aiChat,
-		subscriptions, createUserSubscription, getUserTokens
+		authRegister, authLogin, auth, authTest,
+		subscriptions, createUserSubscription, getUserTokens,
+		aiChat
 	},
 
 	package: {individually: true},

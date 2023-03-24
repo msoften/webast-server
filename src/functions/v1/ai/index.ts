@@ -16,6 +16,10 @@ export const aiChat = {
 					},
 				},
 				cors: true,
+				authorizer: {
+					name: 'MyCustomAuthorizer',
+					arn: 'arn:aws:lambda:us-east-1:137627469964:function:webast-server-dev-auth',
+				},
 			},
 		},
 	],

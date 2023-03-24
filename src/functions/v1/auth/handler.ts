@@ -98,45 +98,111 @@ export const authFun = async (event: APIGatewayTokenAuthorizerEvent): Promise<AP
 	const token = event.authorizationToken;
 	const methodArn = event.methodArn;
 
-	// Get user with this token.
-	try {
-		const user = await UsersRepository.getUserByToken(token);
 
-		if (user) {
-			return {
-				principalId: 'user',
-				policyDocument: {
-					Version: '2012-10-17',
-					Statement: [
-						{
-							Action: 'execute-api:Invoke',
-							Effect: 'Allow',
-							Resource: methodArn,
-						},
-					],
+	// console.log(`token: ${token}`);
+	// console.log(`methodArn: ${methodArn}`);
+	console.log('auth: something');
+
+	return {
+		principalId: 'user',
+		policyDocument: {
+			Version: '2012-10-17',
+			Statement: [
+				{
+					Action: 'execute-api:Invoke',
+					Effect: 'Allow',
+					Resource: methodArn,
 				},
-			};
-		}
+			],
+		},
+	};
 
-		throw new Error('Authorization failed');
-	} catch (error) {
-		return {
-			principalId: 'user',
-			policyDocument: {
-				Version: '2012-10-17',
-				Statement: [
-					{
-						Action: 'execute-api:Invoke',
-						Effect: 'Deny',
-						Resource: methodArn,
-					},
-				],
-			},
-		};
-	}
+	// Get user with this token.
+	// try {
+	// 	const user = await UsersRepository.getUserByToken(token);
+
+	// 	if (user) {
+	// 		return {
+	// 			principalId: 'user',
+	// 			policyDocument: {
+	// 				Version: '2012-10-17',
+	// 				Statement: [
+	// 					{
+	// 						Action: 'execute-api:Invoke',
+	// 						Effect: 'Allow',
+	// 						Resource: methodArn,
+	// 					},
+	// 				],
+	// 			},
+	// 		};
+	// 	}
+
+	// 	throw new Error('Authorization failed');
+	// } catch (error) {
+	// 	return {
+	// 		principalId: 'user',
+	// 		policyDocument: {
+	// 			Version: '2012-10-17',
+	// 			Statement: [
+	// 				{
+	// 					Action: 'execute-api:Invoke',
+	// 					Effect: 'Deny',
+	// 					Resource: methodArn,
+	// 				},
+	// 			],
+	// 		},
+	// 	};
+	// }
 };
 
 
 const auth = middyfy(authFun);
 
-export {register, login, auth};
+// TODO: Add function docs.
+export const authTestFun = async (event: APIGatewayTokenAuthorizerEvent): Promise<any> => {
+	// TODO: Implement custom authorizer logic here
+	const token = event.authorizationToken;
+
+	// return {
+	// 	statusCode: 200,
+	// 	headers: {
+	// 		'Access-Control-Allow-Origin': '*',
+	// 	},
+	// 	body: JSON.stringify({
+	// 		message: 'Success',
+	// 		data: event
+	// 	})
+	// };
+
+	try {
+		const user = await UsersRepository.getUserByToken('Q7lbUZ4Yzck23iCIAMOvxo7Pm8wWu6EJ');
+
+		return {
+			statusCode: 200,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: 'Success',
+				data: user
+			})
+		};
+	} catch (error) {
+		return {
+			statusCode: 200,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+			},
+			body: JSON.stringify({
+				message: error.message,
+				data: ''
+			})
+		};
+	}
+
+};
+
+
+const authTest = middyfy(authTestFun);
+
+export {register, login, auth, authTest};

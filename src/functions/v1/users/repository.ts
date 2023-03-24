@@ -26,14 +26,14 @@ export const getUserByToken = async (token: string): Promise<UserModel> => {
 	// TODO: Capture dynamodb erros using try catch block.
 	const params = {
 		TableName: process.env.TABLE_USERS,
-		IndexName: 'token',
-		KeyConditionExpression: 'token = :t',
+		FilterExpression: '#token = :token',
+		ExpressionAttributeNames: {'#token': 'token'},
 		ExpressionAttributeValues: {
-			':t': token
+			':token': token,
 		}
 	};
 
-	const results = await docClient.query(params).promise();
+	const results = await docClient.scan(params).promise();
 
 	if (results.Items.length !== 0) {
 		return results.Items[0] as UserModel;
