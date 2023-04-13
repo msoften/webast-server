@@ -37,7 +37,7 @@ const chatFun: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
 				'Access-Control-Allow-Origin': '*',
 			},
 			body: JSON.stringify({
-				message: error.messages,
+				message: error.message,
 				data: ''
 			})
 		};
