@@ -30,7 +30,7 @@ const serverlessConfiguration: AWS = {
 			TABLE_USERS: '${self:service}-users-${self:provider.stage}',
 			TABLE_USERS_SUBSCRIPTIONS: '${self:service}-users-subscriptions-01-${self:provider.stage}',
 		},
-		profile: 'completecoding.io-serverless',
+		profile: 'default',
 		stage: 'dev',
 		region: 'us-east-1',
 	},

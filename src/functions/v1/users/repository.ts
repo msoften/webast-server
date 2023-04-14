@@ -23,7 +23,7 @@ export const getUserByEmail = async (email: string): Promise<UserModel> => {
 // TODO: Add function docs.
 // TODO: Check if token expired.
 export const getUserByToken = async (token: string): Promise<UserModel> => {
-	// TODO: Capture dynamodb erros using try catch block.
+	// TODO: Capture dynamodb errors using try catch block.
 	const params = {
 		TableName: process.env.TABLE_USERS,
 		FilterExpression: '#token = :token',
@@ -34,6 +34,8 @@ export const getUserByToken = async (token: string): Promise<UserModel> => {
 	};
 
 	const results = await docClient.scan(params).promise();
+
+	console.log('results', results);
 
 	if (results.Items.length !== 0) {
 		return results.Items[0] as UserModel;
