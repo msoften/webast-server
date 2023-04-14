@@ -39,6 +39,6 @@ export const getAIChatResponse = async (messages: any, email: string): Promise<a
 
 		return completion.data.choices[0].message;
 	} catch (error) {
-		throw new Error(error.getmessage);
+		throw new Error(error.message);
 	}
 };

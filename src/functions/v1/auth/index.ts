@@ -67,17 +67,15 @@ export const authLogin = {
 // TODO: Add openAPI docs.
 export const auth = {
 	handler: `${handlerPath(__dirname)}/handler.auth`,
-	// iamRoleStatements: [
-	// 	{
-	// 		Effect: 'Allow',
-	// 		Action: [
-	// 			'dynamodb:GetItem',
-	// 			'dynamodb:PutItem',
-	// 			'dynamodb:Scan',
-	// 		],
-	// 		Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:service}-users-${self:provider.stage}',
-	// 	},
-	// ],
+	iamRoleStatements: [
+		{
+			Effect: 'Allow',
+			Action: [
+				'dynamodb:Scan',
+			],
+			Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:service}-users-${self:provider.stage}',
+		},
+	],
 };
 
 
@@ -90,6 +88,9 @@ export const authTest = {
 				method: 'post',
 				path: 'v1/auth/test',
 				cors: true,
+				authorizer: {
+					name: 'auth',
+				},
 			},
 		},
 	],
