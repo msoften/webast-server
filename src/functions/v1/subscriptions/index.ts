@@ -1,6 +1,6 @@
 import { handlerPath } from '@libs/handler-resolver';
-
 // TODO: Change tables reference to be dynamic
+
 
 // TODO: Add openAPI docs.
 export const subscriptions = {
@@ -10,6 +10,20 @@ export const subscriptions = {
 			http: {
 				method: 'get',
 				path: 'v1/subscriptions',
+				cors: true,
+			},
+		},
+	],
+};
+
+
+export const checkoutPage = {
+	handler: `${handlerPath(__dirname)}/handler.checkoutPage`,
+	events: [
+		{
+			http: {
+				method: 'get',
+				path: 'v1/subscriptions/user',
 				cors: true,
 			},
 		},

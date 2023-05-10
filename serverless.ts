@@ -3,7 +3,7 @@ import type {AWS} from '@serverless/typescript';
 import hello from '@functions/hello';
 import {authRegister, authLogin, auth, authTest} from '@functions/v1/auth';
 import {aiChat} from '@functions/v1/ai';
-import {subscriptions, createUserSubscription, getUserTokens} from '@functions/v1/subscriptions';
+import {subscriptions, checkoutPage, createUserSubscription, getUserTokens} from '@functions/v1/subscriptions';
 
 const serverlessConfiguration: AWS = {
 	service: 'webast-server',
@@ -41,7 +41,7 @@ const serverlessConfiguration: AWS = {
 	functions: {
 		hello,
 		authRegister, authLogin, auth, authTest,
-		subscriptions, createUserSubscription, getUserTokens,
+		subscriptions, checkoutPage, createUserSubscription, getUserTokens,
 		aiChat
 	},
 
